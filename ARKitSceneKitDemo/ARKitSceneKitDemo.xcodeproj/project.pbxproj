@@ -13,6 +13,7 @@
 		B3FFAE62216F3D2B003D4D99 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B3FFAE60216F3D2B003D4D99 /* Main.storyboard */; };
 		B3FFAE64216F3D2D003D4D99 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B3FFAE63216F3D2D003D4D99 /* Assets.xcassets */; };
 		B3FFAE67216F3D2D003D4D99 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B3FFAE65216F3D2D003D4D99 /* LaunchScreen.storyboard */; };
+		B3FFAE6F216F3D73003D4D99 /* ResidentialAreaInformationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3FFAE6E216F3D73003D4D99 /* ResidentialAreaInformationView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		B3FFAE63216F3D2D003D4D99 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B3FFAE66216F3D2D003D4D99 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B3FFAE68216F3D2D003D4D99 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B3FFAE6E216F3D73003D4D99 /* ResidentialAreaInformationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResidentialAreaInformationView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,6 +61,7 @@
 				B3FFAE5A216F3D2B003D4D99 /* AppDelegate.swift */,
 				B3FFAE5C216F3D2B003D4D99 /* art.scnassets */,
 				B3FFAE5E216F3D2B003D4D99 /* ViewController.swift */,
+				B3FFAE6E216F3D73003D4D99 /* ResidentialAreaInformationView.swift */,
 				B3FFAE60216F3D2B003D4D99 /* Main.storyboard */,
 				B3FFAE63216F3D2D003D4D99 /* Assets.xcassets */,
 				B3FFAE65216F3D2D003D4D99 /* LaunchScreen.storyboard */,
@@ -141,6 +144,7 @@
 			files = (
 				B3FFAE5F216F3D2B003D4D99 /* ViewController.swift in Sources */,
 				B3FFAE5B216F3D2B003D4D99 /* AppDelegate.swift in Sources */,
+				B3FFAE6F216F3D73003D4D99 /* ResidentialAreaInformationView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

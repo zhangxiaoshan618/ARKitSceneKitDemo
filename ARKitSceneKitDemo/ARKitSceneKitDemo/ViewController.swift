@@ -14,8 +14,42 @@ class ViewController: UIViewController, ARSCNViewDelegate {
 
     @IBOutlet var sceneView: ARSCNView!
     
+    private lazy var infoLabel: UILabel = {
+        let label = UILabel()
+        label.backgroundColor = UIColor.init(white: 0, alpha: 0.8)
+        label.textColor = UIColor.white
+        label.font = UIFont.boldSystemFont(ofSize: 20)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    private lazy var infoView: ResidentialAreaInformationView = {
+        let view = ResidentialAreaInformationView(frame: CGRect(x: 0, y: 0, width: 200, height: 80))
+        view.layoutIfNeeded()
+        return view
+    }()
+    
+    private lazy var node:SCNNode = {
+        // 位置
+        let nodePosition = SCNVector3Make(-20, 5, -500)
+        
+        let plane = SCNPlane(width: 200 , height: 80);
+        plane.firstMaterial?.diffuse.contents = infoView.layer
+        plane.firstMaterial?.lightingModel = .constant
+        
+        let constraint = SCNBillboardConstraint()
+        constraint.freeAxes = .Y
+        
+        let node = SCNNode(geometry: plane)
+        node.position = nodePosition;
+        node.constraints = [constraint]
+        return node
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        setUpUI()
         
         // Set the view's delegate
         sceneView.delegate = self
@@ -23,11 +57,43 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         // Show statistics such as fps and timing information
         sceneView.showsStatistics = true
         
-        // Create a new scene
-        let scene = SCNScene(named: "art.scnassets/ship.scn")!
+        let configuration = AROrientationTrackingConfiguration()
+        configuration.worldAlignment = .gravityAndHeading
         
-        // Set the scene to the view
-        sceneView.scene = scene
+        sceneView.session.run(configuration, options: [])
+        
+//        // Create a new scene
+//        let scene = SCNScene(named: "art.scnassets/ship.scn")!
+//        
+//        // Set the scene to the view
+//        sceneView.scene = scene
+        
+        sceneView.scene.rootNode.addChildNode(node)
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(ViewController.handleTap(gestrueRecognize:)))
+        
+        view.addGestureRecognizer(tapGesture)
+    }
+    
+    func setUpUI() {
+        view.addSubview(infoLabel)
+        let views = ["infoLabel" : infoLabel]
+        
+        let infoLabelConstraintH = NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[infoLabel]-0-|", options: [], metrics: nil, views: views)
+        let infoLabelConstraintV = NSLayoutConstraint.constraints(withVisualFormat: "V:[infoLabel(100)]-0-|", options: [], metrics: nil, views: views)
+        NSLayoutConstraint.activate(infoLabelConstraintH + infoLabelConstraintV)
+    }
+    
+    @objc
+    func handleTap(gestrueRecognize: UITapGestureRecognizer) {
+        let location = gestrueRecognize.location(in: sceneView)
+        
+        let hitResults = sceneView.hitTest(location, options: [SCNHitTestOption.searchMode : SCNHitTestSearchMode.closest.rawValue])
+        if let hitTestNode = hitResults.first?.node, hitTestNode == node {
+            self.infoView.backgroundView.image = #imageLiteral(resourceName: "map_bubble_selected").stretchableImage(withLeftCapWidth: 20, topCapHeight: 20)
+            self.infoLabel.text = "融泽嘉园二期2号楼"
+        }
+
     }
     
     override func viewWillAppear(_ animated: Bool) {
