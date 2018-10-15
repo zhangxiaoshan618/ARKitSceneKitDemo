@@ -14,6 +14,10 @@ class ViewController: UIViewController, ARSCNViewDelegate {
 
     @IBOutlet var sceneView: ARSCNView!
     
+    private var viewModel: ViewModel = ViewModel()
+    private var nodes: [ResidentialAreaInformationNode] = []
+    private var selectedNode: ResidentialAreaInformationNode?
+    
     private lazy var infoLabel: UILabel = {
         let label = UILabel()
         label.backgroundColor = UIColor.init(white: 0, alpha: 0.8)
@@ -24,30 +28,60 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     }()
     
     private lazy var infoView: ResidentialAreaInformationView = {
-        let view = ResidentialAreaInformationView(frame: CGRect(x: 0, y: 0, width: 200, height: 80))
-        view.layoutIfNeeded()
+        let view = ResidentialAreaInformationView()
+        view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     
-    private lazy var node:SCNNode = {
-        // 位置
-        let nodePosition = SCNVector3Make(-20, 5, -500)
+    private lazy var activity: UIActivityIndicatorView = {
+        let activity = UIActivityIndicatorView(style: UIActivityIndicatorView.Style.gray)
+        activity.translatesAutoresizingMaskIntoConstraints = false
+        activity.hidesWhenStopped = true
+        return activity
+    }()
+    
+    private lazy var testView: ResidentialAreaCardView = {
+        let model = ResidentialAreaCardModel()
+        model.name = "融泽嘉园"
+        model.distance = "约100米"
+        model.size = CGSize(width: 100, height: 50)
         
-        let plane = SCNPlane(width: 200 , height: 80);
-        plane.firstMaterial?.diffuse.contents = infoView.layer
-        plane.firstMaterial?.lightingModel = .constant
+        let test = ResidentialAreaCardView(model: model)
         
-        let constraint = SCNBillboardConstraint()
-        constraint.freeAxes = .Y
-        
-        let node = SCNNode(geometry: plane)
-        node.position = nodePosition;
-        node.constraints = [constraint]
-        return node
+        return test
     }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        func setUpUI() {
+            view.addSubview(infoView)
+            view.addSubview(activity)
+//            view.addSubview(testView)
+//            view.layer.addSublayer(testView.layer)
+            
+            let views = ["infoView" : infoView]
+            let infoLabelConstraintH = NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[infoView]-0-|", options: [], metrics: nil, views: views)
+            let infoLabelConstraintV = NSLayoutConstraint.constraints(withVisualFormat: "V:[infoView(100)]-0-|", options: [], metrics: nil, views: views)
+            let activetyConstraintCenterY = activity.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+            let activetyConstraintCenterX = activity.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+            
+            
+            NSLayoutConstraint.activate(infoLabelConstraintH + infoLabelConstraintV + [activetyConstraintCenterX, activetyConstraintCenterY])
+        }
+        
+        func updateNodes() {
+            var nodes: [ResidentialAreaInformationNode] = []
+            
+            for model in viewModel.models {
+                let infoViewModel = ResidentialAreaInformationViewModel(with: model)
+                print(infoViewModel)
+                let node: ResidentialAreaInformationNode = ResidentialAreaInformationNode(with: infoViewModel)
+                sceneView.scene.rootNode.addChildNode(node)
+                nodes.append(node)
+            }
+            self.nodes = nodes
+        }
         
         setUpUI()
         
@@ -62,39 +96,49 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
         sceneView.session.run(configuration, options: [])
         
-//        // Create a new scene
-//        let scene = SCNScene(named: "art.scnassets/ship.scn")!
-//        
-//        // Set the scene to the view
-//        sceneView.scene = scene
-        
-        sceneView.scene.rootNode.addChildNode(node)
+//        sceneView.scene.rootNode.addChildNode(node)
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(ViewController.handleTap(gestrueRecognize:)))
         
         view.addGestureRecognizer(tapGesture)
-    }
-    
-    func setUpUI() {
-        view.addSubview(infoLabel)
-        let views = ["infoLabel" : infoLabel]
         
-        let infoLabelConstraintH = NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[infoLabel]-0-|", options: [], metrics: nil, views: views)
-        let infoLabelConstraintV = NSLayoutConstraint.constraints(withVisualFormat: "V:[infoLabel(100)]-0-|", options: [], metrics: nil, views: views)
-        NSLayoutConstraint.activate(infoLabelConstraintH + infoLabelConstraintV)
+        
+        activity.startAnimating()
+        viewModel.loadData {
+            updateNodes()
+            self.activity.stopAnimating()
+        }
     }
     
     @objc
     func handleTap(gestrueRecognize: UITapGestureRecognizer) {
-        let location = gestrueRecognize.location(in: sceneView)
         
-        let hitResults = sceneView.hitTest(location, options: [SCNHitTestOption.searchMode : SCNHitTestSearchMode.closest.rawValue])
-        if let hitTestNode = hitResults.first?.node, hitTestNode == node {
-            self.infoView.backgroundView.image = #imageLiteral(resourceName: "map_bubble_selected").stretchableImage(withLeftCapWidth: 20, topCapHeight: 20)
-            self.infoLabel.text = "融泽嘉园二期2号楼"
-        }
+//        let height: CGFloat = 10
+//        let width: CGFloat = testView.bounds.width / testView.bounds.height * height
+//        let plane = SCNPlane(width: width, height: height)
+//        plane.firstMaterial?.diffuse.contents = testView
+//        plane.firstMaterial?.lightingModel = .constant
+//
+//        let node = SCNNode(geometry: plane)
+//        let constraint = SCNBillboardConstraint()
+//        constraint.freeAxes = .Y
+//        node.constraints = [constraint]
+//        node.position = SCNVector3Make(0, 0, -50)
+//
+//        sceneView.scene.rootNode.addChildNode(node)
+        
+        let location = gestrueRecognize.location(in: sceneView)
 
+        let hitResults = sceneView.hitTest(location, options: [SCNHitTestOption.searchMode : SCNHitTestSearchMode.closest.rawValue])
+        if let hitTestNode: ResidentialAreaInformationNode = hitResults.first?.node as? ResidentialAreaInformationNode {
+            hitTestNode.isSelected = !hitTestNode.isSelected
+            selectedNode?.isSelected = !selectedNode!.isSelected
+            selectedNode = hitTestNode
+            infoView.configWith(name: hitTestNode.model.name, address: hitTestNode.model.address, distance: hitTestNode.model.distance, longitude: hitTestNode.model.longitude, latitude: hitTestNode.model.latitude)
+        }
     }
+    
+    
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)

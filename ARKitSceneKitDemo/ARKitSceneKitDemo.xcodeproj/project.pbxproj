@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B3534AD4217081420038E4E3 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3534AD3217081420038E4E3 /* ViewModel.swift */; };
+		B3534AD821709DC70038E4E3 /* ResidentialAreaInformationNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3534AD721709DC70038E4E3 /* ResidentialAreaInformationNode.swift */; };
+		B3534ADA21709E6B0038E4E3 /* ResidentialAreaCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3534AD921709E6B0038E4E3 /* ResidentialAreaCardView.swift */; };
 		B3FFAE5B216F3D2B003D4D99 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3FFAE5A216F3D2B003D4D99 /* AppDelegate.swift */; };
 		B3FFAE5D216F3D2B003D4D99 /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = B3FFAE5C216F3D2B003D4D99 /* art.scnassets */; };
 		B3FFAE5F216F3D2B003D4D99 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3FFAE5E216F3D2B003D4D99 /* ViewController.swift */; };
@@ -17,6 +20,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		B3534AD3217081420038E4E3 /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
+		B3534AD721709DC70038E4E3 /* ResidentialAreaInformationNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResidentialAreaInformationNode.swift; sourceTree = "<group>"; };
+		B3534AD921709E6B0038E4E3 /* ResidentialAreaCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResidentialAreaCardView.swift; sourceTree = "<group>"; };
 		B3FFAE57216F3D2B003D4D99 /* ARKitSceneKitDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ARKitSceneKitDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B3FFAE5A216F3D2B003D4D99 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B3FFAE5C216F3D2B003D4D99 /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
@@ -39,11 +45,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		B3534ADB2170B8820038E4E3 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		B3FFAE4E216F3D2B003D4D99 = {
 			isa = PBXGroup;
 			children = (
 				B3FFAE59216F3D2B003D4D99 /* ARKitSceneKitDemo */,
 				B3FFAE58216F3D2B003D4D99 /* Products */,
+				B3534ADB2170B8820038E4E3 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -61,7 +75,10 @@
 				B3FFAE5A216F3D2B003D4D99 /* AppDelegate.swift */,
 				B3FFAE5C216F3D2B003D4D99 /* art.scnassets */,
 				B3FFAE5E216F3D2B003D4D99 /* ViewController.swift */,
+				B3534AD721709DC70038E4E3 /* ResidentialAreaInformationNode.swift */,
+				B3534AD921709E6B0038E4E3 /* ResidentialAreaCardView.swift */,
 				B3FFAE6E216F3D73003D4D99 /* ResidentialAreaInformationView.swift */,
+				B3534AD3217081420038E4E3 /* ViewModel.swift */,
 				B3FFAE60216F3D2B003D4D99 /* Main.storyboard */,
 				B3FFAE63216F3D2D003D4D99 /* Assets.xcassets */,
 				B3FFAE65216F3D2D003D4D99 /* LaunchScreen.storyboard */,
@@ -102,6 +119,11 @@
 				TargetAttributes = {
 					B3FFAE56216F3D2B003D4D99 = {
 						CreatedOnToolsVersion = 10.0;
+						SystemCapabilities = {
+							com.apple.Maps.iOS = {
+								enabled = 0;
+							};
+						};
 					};
 				};
 			};
@@ -143,7 +165,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				B3FFAE5F216F3D2B003D4D99 /* ViewController.swift in Sources */,
+				B3534AD821709DC70038E4E3 /* ResidentialAreaInformationNode.swift in Sources */,
+				B3534ADA21709E6B0038E4E3 /* ResidentialAreaCardView.swift in Sources */,
 				B3FFAE5B216F3D2B003D4D99 /* AppDelegate.swift in Sources */,
+				B3534AD4217081420038E4E3 /* ViewModel.swift in Sources */,
 				B3FFAE6F216F3D73003D4D99 /* ResidentialAreaInformationView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
