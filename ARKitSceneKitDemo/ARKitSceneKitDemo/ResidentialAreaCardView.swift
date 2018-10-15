@@ -17,13 +17,13 @@ class ResidentialAreaCardModel {
 class ResidentialAreaCardView: UIView {
 
     lazy var backgroundView: UIImageView = {
-        let image = UIImageView(image: UIImage(named: "rectangle"))
+        let image = UIImageView(image: UIImage(named: "rectangle")?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate))
         image.translatesAutoresizingMaskIntoConstraints = false
         return image
     }()
     
     lazy var bottomBackgroundView: UIImageView = {
-        let image = UIImageView(image: UIImage(named: "triangle"))
+        let image = UIImageView(image: UIImage(named: "triangle")?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate))
         image.translatesAutoresizingMaskIntoConstraints = false
         return image
     }()
@@ -55,6 +55,7 @@ class ResidentialAreaCardView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = UIColor.clear
+        tintColor = UIColor.white
         
         func setUpUI() {
             
@@ -63,24 +64,27 @@ class ResidentialAreaCardView: UIView {
             addSubview(nameLabel)
             addSubview(distanceLabel)
             
-            let views = ["backgroundView" : backgroundView, "bottomBackgroundView" : bottomBackgroundView, "nameLabel" : nameLabel, "distanceLabel" : distanceLabel]
-            
-            let backgroundViewConstraintH = NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[backgroundView]-0-|", options: [], metrics: nil, views: views)
-            
-            let backgroundViewConstraintHeight = backgroundView.heightAnchor.constraint(equalToConstant: 8)
             let backgroundViewConstraintTop = backgroundView.topAnchor.constraint(equalTo: self.topAnchor)
+            let backgroundViewConstraintLeading = backgroundView.leadingAnchor.constraint(equalTo: self.leadingAnchor)
+            let backgroundViewConstraintTrailing = backgroundView.trailingAnchor.constraint(equalTo: self.trailingAnchor)
+            let backgroundViewConstraintBottom = backgroundView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -20)
+            
             let bottomBackgroundViewConstraintBottom = bottomBackgroundView.bottomAnchor.constraint(equalTo: self.bottomAnchor)
-            let bottomBackgroundViewConstraintHeight = bottomBackgroundView.heightAnchor.constraint(equalToConstant: 20)
+            let bottomBackgroundViewConstraintHeight = bottomBackgroundView.heightAnchor.constraint(equalToConstant: 30)
             let bottomBackgroundViewConstraintWidth = bottomBackgroundView.widthAnchor.constraint(equalToConstant: 20)
             let bottomBackgroundViewConstraintCentX = bottomBackgroundView.centerXAnchor.constraint(equalTo: self.centerXAnchor)
             
+            let nameLabelConstraintTop = nameLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 10)
+            let nameLabelConstraintLeading = nameLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 10)
+            let nameLabelConstraintTrailing = nameLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10)
+            let nameLabelConstraintHeight = nameLabel.heightAnchor.constraint(equalToConstant: 20)
             
-            let nameLabelConstrantH = NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[nameLabel]-10-|", options: [], metrics: nil, views: views)
-            let contentConstrantV = NSLayoutConstraint.constraints(withVisualFormat: "V:|-10-[nameLabel(13)]-5-[distanceLabel(10)]-20-|", options: [], metrics: nil, views: views)
-            let distanceLabelConstrantH = NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[distanceLabel]-10-|", options: [], metrics: nil, views: views)
+            let distanceLabelConstraintTop = distanceLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 5)
+            let distanceLabellConstraintLeading = distanceLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 10)
+            let distanceLabelConstraintTrailing = distanceLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10)
+            let distanceLabelConstraintHeight = distanceLabel.heightAnchor.constraint(equalToConstant: 15)
             
-            
-            NSLayoutConstraint.activate(backgroundViewConstraintH + nameLabelConstrantH + contentConstrantV + distanceLabelConstrantH + [bottomBackgroundViewConstraintWidth, bottomBackgroundViewConstraintCentX, bottomBackgroundViewConstraintHeight, bottomBackgroundViewConstraintBottom, backgroundViewConstraintTop, backgroundViewConstraintHeight])
+            NSLayoutConstraint.activate([backgroundViewConstraintTop, backgroundViewConstraintLeading, backgroundViewConstraintTrailing, backgroundViewConstraintBottom, bottomBackgroundViewConstraintBottom, bottomBackgroundViewConstraintCentX, bottomBackgroundViewConstraintWidth, bottomBackgroundViewConstraintHeight, nameLabelConstraintTop, nameLabelConstraintLeading, nameLabelConstraintTrailing, nameLabelConstraintHeight, distanceLabelConstraintTop, distanceLabelConstraintTrailing, distanceLabellConstraintLeading, distanceLabelConstraintHeight])
         }
         
         setUpUI()
@@ -88,6 +92,15 @@ class ResidentialAreaCardView: UIView {
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func makeImage() -> UIImage? {
+        UIGraphicsBeginImageContext(self.bounds.size)
+        self.layer.render(in: UIGraphicsGetCurrentContext()!)
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return image;
     }
 
 }

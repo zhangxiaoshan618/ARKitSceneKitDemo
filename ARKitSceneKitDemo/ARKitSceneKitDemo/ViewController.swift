@@ -44,11 +44,16 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         let model = ResidentialAreaCardModel()
         model.name = "融泽嘉园"
         model.distance = "约100米"
-        model.size = CGSize(width: 100, height: 50)
+        model.size = CGSize(width: 100, height: 80)
         
         let test = ResidentialAreaCardView(model: model)
         
         return test
+    }()
+    
+    private lazy var image: UIImageView = {
+        let image = UIImageView(frame: CGRect(x: 0, y: 100, width: 200, height: 80))
+        return image
     }()
     
     override func viewDidLoad() {
@@ -57,8 +62,8 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         func setUpUI() {
             view.addSubview(infoView)
             view.addSubview(activity)
-//            view.addSubview(testView)
-//            view.layer.addSublayer(testView.layer)
+            view.addSubview(testView)
+            view.addSubview(image)
             
             let views = ["infoView" : infoView]
             let infoLabelConstraintH = NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[infoView]-0-|", options: [], metrics: nil, views: views)
@@ -75,7 +80,6 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             
             for model in viewModel.models {
                 let infoViewModel = ResidentialAreaInformationViewModel(with: model)
-                print(infoViewModel)
                 let node: ResidentialAreaInformationNode = ResidentialAreaInformationNode(with: infoViewModel)
                 sceneView.scene.rootNode.addChildNode(node)
                 nodes.append(node)
@@ -112,11 +116,11 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     
     @objc
     func handleTap(gestrueRecognize: UITapGestureRecognizer) {
-        
+
 //        let height: CGFloat = 10
 //        let width: CGFloat = testView.bounds.width / testView.bounds.height * height
 //        let plane = SCNPlane(width: width, height: height)
-//        plane.firstMaterial?.diffuse.contents = testView
+//        plane.firstMaterial?.diffuse.contents = testView.layer
 //        plane.firstMaterial?.lightingModel = .constant
 //
 //        let node = SCNNode(geometry: plane)

@@ -40,7 +40,7 @@ class ResidentialAreaInformationViewModel: NSObject {
         
         let width: CGFloat = ceil((model.name as NSString).boundingRect(with: CGSize(width: CGFloat.greatestFiniteMagnitude, height: 23), options: [], attributes: [NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 20)], context: nil).width)
         
-        cardModel.size = CGSize(width: (width > 200 ? 200 : width) + 20, height: 58)
+        cardModel.size = CGSize(width: (width > 200 ? 200 : width) + 20, height: 80)
         self.cardModel = cardModel
         
         let location = CLLocation(latitude: 40.0467683620, longitude: 116.3146165990)
@@ -77,7 +77,8 @@ class ResidentialAreaInformationNode: SCNNode {
     var model: ResidentialAreaInformationViewModel
     var isSelected: Bool = false {
         didSet {
-            self.cardView.backgroundView.image = (isSelected ? UIImage(named: "map_bubble_selected") : UIImage(named: "map_bubble"))?.stretchableImage(withLeftCapWidth: 20, topCapHeight: 20)
+            self.cardView.tintColor = isSelected ? UIColor.green : UIColor.white
+            plane.firstMaterial?.diffuse.contents = cardView.makeImage()
         }
     }
 
@@ -91,7 +92,7 @@ class ResidentialAreaInformationNode: SCNNode {
         let height: CGFloat = 10
         let width: CGFloat = cardView.bounds.width / cardView.bounds.height * height
         let plane = SCNPlane(width: width, height: height)
-        plane.firstMaterial?.diffuse.contents = self.cardView.layer
+        plane.firstMaterial?.diffuse.contents = cardView.makeImage()
         plane.firstMaterial?.lightingModel = .constant
         return plane
     }()
